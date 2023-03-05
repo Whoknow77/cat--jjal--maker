@@ -22,9 +22,6 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-    .favorites img {
-      width: 150px;
-    }
   </style>
   <body>
     <div id="app"></div>
@@ -45,28 +42,30 @@
         return <h1>{props.children}</h1>;
       };
 
-      const Form = () => (
-        <form>
-          <input
-            type="text"
-            name="name"
-            placeholder="영어 대사를 입력해주세요"
-          />
-          <button type="submit">생성</button>
-        </form>
-      );
+      const Form = ({ handleFormSubmit }) => {
+        return (
+          <form onSubmit={handleFormSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="영어 대사를 입력해주세요"
+            />
+            <button type="submit">생성</button>
+          </form>
+        );
+      };
 
       function CatItem(props) {
         return (
           <li>
-            <img src={props.img} />
+            <img src={props.img} style={{ width: "150px" }} />
           </li>
         );
       }
 
       function Favorites() {
         return (
-          <ul class="favorites">
+          <ul className="favorites">
             <CatItem img="https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn" />
             <CatItem img="https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript" />
           </ul>
@@ -74,26 +73,49 @@
       }
 
       const MainCard = ({ img }) => {
+        function handleHeartClick() {
+          console.log("하트 눌렀음");
+        }
+        function handleHeartMouseOver() {
+          console.log("하트 스쳐 지나감");
+        }
         return (
-          <div class="main-card">
+          <div className="main-card">
             <img src={img} alt="고양이" width="400" />
-            <button>🤍</button>
+            <button
+              onClick={handleHeartClick}
+              onMouseOver={handleHeartMouseOver}
+            >
+              🤍
+            </button>
           </div>
         );
       };
 
-      const app = (
-        <div>
-          <Title>1번째 고양이 가라사대</Title>
-          <Form />
-          <MainCard img="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
-          <Favorites />
-        </div>
-      );
+      const App = () => {
+        const [counter, setCounter] = React.useState(1);
+
+        console.log("카운터", counter);
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          console.log("폼 전송됨");
+          setCounter(counter + 1);
+        }
+
+        return (
+          <div>
+            <Title>{counter}번째 고양이 가라사대</Title>
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard img="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
+            <Favorites />
+          </div>
+        );
+      };
 
       const 여기다가그려 = document.querySelector("#app");
 
-      ReactDOM.render(app, 여기다가그려);
+      ReactDOM.render(<App />, 여기다가그려);
     </script>
   </body>
 </html>
