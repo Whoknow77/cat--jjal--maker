@@ -93,7 +93,12 @@
       };
 
       const App = () => {
+        const CAT1 = "https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react";
+        const CAT2 = "https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn";
+        const CAT3 = "https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript";
+
         const [counter, setCounter] = React.useState(1);
+        const [mainCat, setMainCat] = React.useState(CAT1);
 
         console.log("카운터", counter);
 
@@ -101,13 +106,14 @@
           event.preventDefault();
           console.log("폼 전송됨");
           setCounter(counter + 1);
+          setMainCat(CAT2);
         }
 
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
             <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard img="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
+            <MainCard img={mainCat} />
             <Favorites />
           </div>
         );
