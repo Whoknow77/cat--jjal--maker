@@ -57,16 +57,16 @@
         );
       }
 
-      const MainCard = ({ img, handleHeartClick }) => {
+      const MainCard = ({ img, onHeartClick }) => {
         return (
           <div className="main-card">
             <img src={img} alt="고양이" width="400" />
-            <button onClick={handleHeartClick}>🤍</button>
+            <button onClick={onHeartClick}>🤍</button>
           </div>
         );
       };
 
-      const Form = () => {
+      const Form = ({ updateMainCat }) => {
         const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text); // 한글 검증
         const [value, setValue] = React.useState("");
         const [errorMessage, setErrorMessage] = React.useState("");
@@ -86,7 +86,10 @@
 
           if (value === "") {
             setErrorMessage("빈 값으로 만들 수 없습니다.");
+            return;
           }
+
+          updateMainCat();
         }
 
         return (
@@ -117,10 +120,9 @@
         const [counter, setCounter] = React.useState(1);
         const [MainCat, setMainCat] = React.useState(CAT1);
         const [favorites, setFavorites] = React.useState([CAT1, CAT2, CAT3]);
-        function handleFormSubmit(e) {
-          e.preventDefault();
-          setCounter(counter + 1);
+        function updateMainCat() {
           setMainCat(CAT2);
+          setCounter(counter + 1);
         }
 
         function handleHeartClick() {
@@ -130,8 +132,8 @@
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
-            <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard img={MainCat} handleHeartClick={handleHeartClick} />
+            <Form updateMainCat={updateMainCat} />
+            <MainCard img={MainCat} onHeartClick={handleHeartClick} />
             <Favorites favorites={favorites} />
           </div>
         );
