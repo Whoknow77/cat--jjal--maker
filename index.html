@@ -48,6 +48,16 @@
         },
       };
 
+      const fetchCat = async (text) => {
+        const OPEN_API_DOMAIN = "https://http.cat";
+        const response = await fetch(
+          // `${OPEN_API_DOMAIN}/${text}.jpg`
+          `https://dog.ceo/api/breeds/image/random`
+        );
+        const responseJson = await response.json();
+        return `${OPEN_API_DOMAIN}/${responseJson.url}`;
+      };
+
       function CatItem(props) {
         return (
           <li>
@@ -133,8 +143,21 @@
         const [favorites, setFavorites] = React.useState(
           jsonLocalStorage.getItem("favorites") || []
         );
-        function updateMainCat() {
-          setMainCat(CAT2);
+
+        async function setInitialCat() {
+          const newCat = await fetchCat("test"); // 서버로부터 받은 고양이 이미지
+          setMainCat(newCat);
+        }
+
+        // 함수를 원할때만 호출
+        // []에 들어가는 값이 제어값, counter일 경우 : counter가 변할때마다 호출, 빈 값일경우, 초기에만!
+        React.useEffect(() => {
+          setInitialCat(); // 초기 고양이 사진 서버로부터 받아오기
+        }, []);
+
+        async function updateMainCat() {
+          const newCat = await fetchCat("test"); // 서버로부터 받은 고양이 이미지
+          setMainCat(newCat);
           const nextCounter = counter + 1;
           setCounter(nextCounter);
           jsonLocalStorage.setItem("counter", nextCounter);
