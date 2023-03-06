@@ -137,14 +137,16 @@
         const CAT2 = "https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn";
         const CAT3 = "https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript";
 
-        const [counter, setCounter] = React.useState(
-          jsonLocalStorage.getItem("counter")
-        );
+        // useState의 인자로 익명함수를 넣으면 페이지 로드 최초 1회에만 로컬 접근
+        const [counter, setCounter] = React.useState(() => {
+          return jsonLocalStorage.getItem("counter");
+        });
 
         const [MainCat, setMainCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState(
-          jsonLocalStorage.getItem("favorites") || []
-        );
+
+        const [favorites, setFavorites] = React.useState(() => {
+          return jsonLocalStorage.getItem("favorites") || [];
+        });
 
         const alreadyFavorite = favorites.includes(MainCat);
 
@@ -162,9 +164,13 @@
         async function updateMainCat() {
           const newCat = await fetchCat("test"); // 서버로부터 받은 고양이 이미지
           setMainCat(newCat);
-          const nextCounter = counter + 1;
-          setCounter(nextCounter);
-          jsonLocalStorage.setItem("counter", nextCounter);
+
+          // 생성을 여러번 눌렀을 때 딜레이 처리
+          setCounter((prev) => {
+            const nextCounter = prev + 1;
+            jsonLocalStorage.setItem("counter", nextCounter);
+            return nextCounter;
+          });
         }
 
         function handleHeartClick() {
