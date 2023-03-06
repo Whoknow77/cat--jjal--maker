@@ -6,26 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>고양이 가라사대</title>
   </head>
-  <style>
-    body {
-      text-align: center;
-    }
-    .main-card button {
-      position: relative;
-      left: -45px;
-      bottom: 15px;
-    }
-    .favorites {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .favorites img {
-      width: 150px;
-    }
-  </style>
   <body>
     <div id="app"></div>
 
@@ -125,10 +105,6 @@
             <p style={{ color: "red" }}>{errorMessage}</p>
           </form>
         );
-      };
-
-      const Title = (props) => {
-        return <h1>{props.children}</h1>;
       };
 
       const 여기다가그려 = document.querySelector("#app");
